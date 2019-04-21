@@ -75,8 +75,16 @@ abstract public class SpinnakerService<T> implements HasServiceSettings<T> {
     return getType().getCanonicalName();
   }
 
+  public String getBaseCanonicalName() {
+    return getType().getBaseType().getCanonicalName();
+  }
+
   public String getSpinnakerStagingPath(String deploymentName) {
     return halconfigDirectoryStructure.getStagingPath(deploymentName).toString();
+  }
+
+  public String getSpinnakerStagingDependenciesPath(String deploymentName) {
+    return halconfigDirectoryStructure.getStagingDependenciesPath(deploymentName).toString();
   }
 
   public ServiceSettings getDefaultServiceSettings(DeploymentConfiguration deploymentConfiguration) {
@@ -147,6 +155,7 @@ abstract public class SpinnakerService<T> implements HasServiceSettings<T> {
     CLOUDDRIVER_BOOTSTRAP(CLOUDDRIVER, "bootstrap"),
     CLOUDDRIVER_CACHING(CLOUDDRIVER, "caching"),
     CLOUDDRIVER_RO(CLOUDDRIVER, "ro"),
+    CLOUDDRIVER_RO_DECK(CLOUDDRIVER, "ro-deck"),
     CLOUDDRIVER_RW(CLOUDDRIVER, "rw"),
     CONSUL_CLIENT("consul-client"),
     CONSUL_SERVER("consul-server"),

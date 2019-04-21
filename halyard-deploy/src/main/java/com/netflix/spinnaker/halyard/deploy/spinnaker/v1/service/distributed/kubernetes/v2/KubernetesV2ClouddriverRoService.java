@@ -43,6 +43,7 @@ public class KubernetesV2ClouddriverRoService extends KubernetesV2ClouddriverSer
   public boolean isEnabled(DeploymentConfiguration deploymentConfiguration) {
     return deploymentConfiguration.getDeploymentEnvironment().getHaServices().getClouddriver().isEnabled();
   }
+
   @Override
   public List<Profile> getProfiles(DeploymentConfiguration deploymentConfiguration, SpinnakerRuntimeSettings endpoints) {
     List<Profile> profiles = super.getProfiles(deploymentConfiguration, endpoints);
@@ -54,11 +55,13 @@ public class KubernetesV2ClouddriverRoService extends KubernetesV2ClouddriverSer
     return profiles;
   }
 
+  @Override
   protected boolean hasServiceOverrides(DeploymentConfiguration deploymentConfiguration) {
     HaServices haServices = deploymentConfiguration.getDeploymentEnvironment().getHaServices();
     return haServices.getClouddriver().getRedisSlaveEndpoint() != null;
   }
 
+  @Override
   protected SpinnakerRuntimeSettings getServiceOverrides(DeploymentConfiguration deploymentConfiguration, SpinnakerRuntimeSettings endpoints) {
     SpinnakerRuntimeSettings serviceOverrides = super.getServiceOverrides(deploymentConfiguration, endpoints);
 

@@ -67,6 +67,9 @@ abstract public class GateService extends SpringService<GateService.Gate> {
     return Gate.class;
   }
 
+  protected void appendReadonlyClouddriverForDeck(Profile profile, DeploymentConfiguration deploymentConfiguration, SpinnakerRuntimeSettings endpoints) {
+  }
+
   @Override
   public List<Profile> getProfiles(DeploymentConfiguration deploymentConfiguration, SpinnakerRuntimeSettings endpoints) {
     List<Profile> profiles = super.getProfiles(deploymentConfiguration, endpoints);
@@ -75,6 +78,8 @@ abstract public class GateService extends SpringService<GateService.Gate> {
     String path = Paths.get(getConfigOutputPath(), filename).toString();
     GateProfileFactory gateProfileFactory = getGateProfileFactory(deploymentConfiguration.getName());
     Profile profile = gateProfileFactory.getProfile(filename, path, deploymentConfiguration, endpoints);
+
+    appendReadonlyClouddriverForDeck(profile, deploymentConfiguration, endpoints);
 
     profiles.add(profile);
     return profiles;
@@ -86,7 +91,7 @@ abstract public class GateService extends SpringService<GateService.Gate> {
       if (Versions.lessThan(version, BOOT_UPGRADED_VERSION)) {
         return boot128ProfileFactory;
       }
-    } catch (NumberFormatException nfe) {
+    } catch (IllegalArgumentException iae) {
       log.warn("Could not resolve Gate version, using `boot154ProfileFactory`.");
     }
     return boot154ProfileFactory;
